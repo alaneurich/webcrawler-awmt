@@ -6,7 +6,10 @@
   "scripts": {
     "nabu-crawler": "node index.js runParser nabuCrawler",
     "nabu-simple-crawler": "node index.js runParser nabuSimpleCrawler",
-    "handelsblatt": "node index.js runParser handelsblatt"
+    "handelsblatt": "node index.js runParser handelsblatt",
+    "nabu-crawler-unsafe": "node index.js runParser nabuCrawler -u",
+    "nabu-simple-crawler-unsafe": "node index.js runParser nabuSimpleCrawler -u",
+    "handelsblatt-unsafe": "node index.js runParser handelsblatt -u"
   },
   "author": "",
   "license": "ISC",
