@@ -4,7 +4,8 @@ const crawler = require('./crawlers');
 const AVAILABLE_PARSERS = [
     'nabuCrawler',
     'nabuSimpleCrawler',
-    'handelsblatt'
+    'handelsblattCrawler',
+    'handelsblattSimpleCrawler'
 ];
 
 program.version('0.0.1');
