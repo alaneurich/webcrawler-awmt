@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "nabu-crawler": "node index.js runParser --type nabuCrawler",
-    "nabu-simple-crawler": "node index.js runParser --type nabuSimpleCrawler",
-    "handelsblatt": "node index.js runParser --type handelsblatt"
+    "nabu-crawler": "node index.js runParser nabuCrawler",
+    "nabu-simple-crawler": "node index.js runParser nabuSimpleCrawler",
+    "handelsblatt": "node index.js runParser handelsblatt"
   },
   "author": "",
   "license": "ISC",
