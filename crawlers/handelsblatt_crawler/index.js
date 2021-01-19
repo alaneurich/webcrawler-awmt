@@ -55,6 +55,8 @@ function parseArticle(error, res, done) {
     console.log(`Crawled ${article.url}.`)
 
     db.get('pages').push(article).write()
+
+    done()
 }
 
 const c = new Crawler({
