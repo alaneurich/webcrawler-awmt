@@ -12,6 +12,12 @@ const crawler = new simplecrawler('https://www.nabu.de/news/18446.html')
 
 crawler.maxDepth = 2
 
+const domainPattern = /\/news\/\d{4}\/\d{2}\//g
+
+crawler.addFetchCondition((queueItem, referrerQueueItem, callback) => {
+  callback(null, domainPattern.test(queueItem.url))
+})
+
 crawler.on('fetchcomplete', (queueItem, responseBuffer, response) => {
   if(!!db.get('pages').find({ url: queueItem.url }).value()) return
 
@@ -26,6 +32,8 @@ crawler.on('fetchcomplete', (queueItem, responseBuffer, response) => {
     page.title = document.title
     page.elements = { }
 
+    console.log(`Crawled ${page.title} (${page.url})`)
+
     for(let i of Array(6).keys()){
       let heading = document.querySelector(`#readspeaker_content h${i + 1}`)
       if(heading){
@@ -38,13 +46,9 @@ crawler.on('fetchcomplete', (queueItem, responseBuffer, response) => {
     if(paragraphs){
       page.elements.paragraphs = Array.from(paragraphs).map(e => e.textContent.replace(/\s+/g, ' ').replace('Mehr →', '').trim()).filter(e => e.length)
     }
-
-    // console.log(page)
   }
 
   db.get('pages').push(page).write()
-
-  // console.log(page)
 })
 
 module.exports = () => {
