@@ -1,18 +1,23 @@
 const { program } = require('commander');
-const crawler = require('./crawlers')
+const crawler = require('./crawlers');
 
 const AVAILABLE_PARSERS = [
     'nabuCrawler',
     'nabuSimpleCrawler',
-    'handelsblatt'
-]
+    'handelsblattCrawler',
+    'handelsblattSimpleCrawler'
+];
 
 program.version('0.0.1');
 
 program
     .command('runParser')
     .arguments('<type>')
-    .action(type => {
+    .option('-u, --unsafe', 'Whether to skip Certificate Verification')
+    .action((type, options) => {
+        if (options.unsafe) {
+            process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+        }
 
         if (!type) {
             console.error('Please supply the type parameter.');
@@ -20,7 +25,7 @@ program
         }
 
         if (!AVAILABLE_PARSERS.includes(type)) {
-            console.error(`Type has to be one of ${AVAILABLE_PARSERS.toString()}. Supplied Type was "${type}"`)
+            console.error(`Type has to be one of ${AVAILABLE_PARSERS.toString()}. Supplied Type was "${type}"`);
             return;
         }
 
