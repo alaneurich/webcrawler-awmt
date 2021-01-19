@@ -21,14 +21,13 @@ crawler.addFetchCondition((queueItem, referrerQueueItem, callback) => {
 crawler.on('fetchcomplete', (queueItem, responseBuffer, response) => {
   if(!!db.get('pages').find({ url: queueItem.url }).value()) return
 
-  let { document } = (new JSDOM(responseBuffer.toString(), { url: queueItem.url })).window
-
   let page = {
-    url: queueItem.url,
-    type: response.headers['content-type']
+    url: queueItem.url
   }
 
-  if(page.type.includes('text/html')){
+  if(response.headers['content-type'].includes('text/html')){
+    let { document } = (new JSDOM(responseBuffer.toString(), { url: queueItem.url })).window
+
     page.title = document.title
     page.elements = { }
 
