@@ -34,33 +34,19 @@ crawler.on('fetchcomplete', (queueItem, responseBuffer, response) => {
     let { document } = (new JSDOM(responseBuffer.toString(), { url: queueItem.url })).window
 
     page.title = document.title
-    page.elements = { }
 
-    console.log(`Crawled ${page.title} (${page.url})`)
+    page.content = Array.from(document.querySelector('#readspeaker_content').querySelectorAll('h1, h2, h3, h4, h5, h6, p, img')).map((e) => {
+      let content = (e.tagName == 'IMG' ? e.src : e.textContent.replace(/\s+/g, ' '))
+      if(e.tagName == 'P') content = content.replace('Mehr →', '')
 
-    for(let i of Array(6).keys()){
-      let heading = document.querySelector(`#readspeaker_content h${i + 1}`)
-      if(heading){
-
-        heading = heading.textContent.replace(/\s+/g, ' ').trim()
-        if(heading){
-          if(!page.elements.headings) page.elements.headings = {}
-          page.elements.headings[`h${i + 1}`] = heading
-        }
+      return {
+        tagName: e.tagName.toLowerCase(),
+        content: content.trim(),
       }
-    }
-
-    let paragraphs = document.querySelectorAll('#readspeaker_content p')
-    if(paragraphs){
-      page.elements.paragraphs = Array.from(paragraphs).map(e => e.textContent.replace(/\s+/g, ' ').replace('Mehr →', '').trim()).filter(e => e.length)
-    }
-
-    let images = document.querySelectorAll('#readspeaker_content img')
-    if(images){
-      page.elements.images = Array.from(images).map(e => e.src)
-    }
+    }).filter((e) => e.content.length)
   }
 
+  console.log(`Crawled ${page.title} (${page.url})`)
   db.get('pages').push(page).write()
 })
 
