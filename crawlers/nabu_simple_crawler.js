@@ -1,5 +1,5 @@
 module.exports = {
     main: () => {
-        console.log('handelsblatt');
+        console.log('nabu');
     }
 }

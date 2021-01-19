@@ -2,7 +2,8 @@ const { program } = require('commander');
 const { crawler } = require('./crawlers')
 
 const AVAILABLE_PARSERS = [
-    'nabu',
+    'nabuCrawler',
+    'nabuSimpleCrawler',
     'handelsblatt'
 ]
 
